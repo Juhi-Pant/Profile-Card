@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+import Api from './api/api'
+import ProfileCard from './components/profileCard'
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
+   
+  const [image, setImage] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState('');
+  const [phone, setPhone] = useState('');
+
+  useEffect(()=>{
+    const fetchProfile = async () => {
+      const result = await Api();
+      console.log(result.name.title);
+      setImage(result.picture.medium);
+      setFirstName(result.name.first)
+      setLastName(result.name.last)
+      setGender(result.gender)
+      setPhone(result.phone)
+    };
+   
+    fetchProfile()
+  }, []);
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div className="flex justify-center items-center h-screen bg-[#222]">
+    <ProfileCard image={image} firstName={firstName} lastName={lastName} gender={gender} phone={phone}/>
     </div>
+    </>
+    
   );
 }
 
